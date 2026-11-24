@@ -126,4 +126,5 @@ test('validation and authorization', async () => {
   await api('POST', '/api/auth/login', { username: 'staff1', password: 'Staff#12345' });
   assert.equal((await api('GET', '/api/users')).status, 403);
   assert.equal((await api('PUT', '/api/settings', { orgName: 'اسم جديد' })).status, 403);
+  assert.equal((await api('GET', '/api/audit')).status, 403);
 });

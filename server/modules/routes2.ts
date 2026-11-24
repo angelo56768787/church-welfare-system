@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { requireAuth, requireRole, validate, wrap } from '../middleware/index.js';
 import { AssistanceRecord, Beneficiary, Church, FinancialTransaction, Installment, Loan, Repayment } from '../models/index.js';
 import { audit } from '../lib/audit.js';
-import { badRequest, notFound } from '../lib/errors.js';
+import { AppError, badRequest, notFound } from '../lib/errors.js';
 import { dateIn, escapeRe, minorAmt, oid, pageMeta, pageQuery, period } from '../lib/http.js';
 import { currentPeriod } from '../lib/period.js';
 import { createLoan, createCashRepayment, loanDetail } from './loanService.js';
@@ -64,6 +64,7 @@ loans.patch('/:id', validate(z.object({ notes: z.string().optional(), status: z.
   const l: any = await Loan.findById(String(req.params.id));
   if (!l) throw notFound('القرض');
   if (req.body.status === 'cancelled') {
+    if (req.user!.role !== 'admin') throw new AppError(403, 'إلغاء القرض للمدير فقط', 'forbidden');
     if (await Repayment.exists({ loan: l._id })) throw badRequest('لا يمكن إلغاء قرض عليه سداد مسجل');
     l.status = 'cancelled';
   }
@@ -124,7 +125,7 @@ assistance.post('/:id/pay', validate(z.object({ paymentDate: dateIn.optional() }
   const r: any = await markPaid(String(req.params.id), req.body.paymentDate ?? new Date(), req.user!);
   res.json({ ...r.toJSON(), netAmount: r.originalAmount - r.deductionAmount });
 }));
-assistance.delete('/:id', wrap(async (req, res) => { await deletePending(String(req.params.id), req.user!); res.json({ ok: true }); }));
+assistance.delete('/:id', requireRole('admin'), wrap(async (req, res) => { await deletePending(String(req.params.id), req.user!); res.json({ ok: true }); }));
 
 assistance.get('/entitlements', validate(z.object({ period: period.default(currentPeriod()), church: oid.optional(), q: z.string().optional() }), 'query'), wrap(async (req, res) => {
   const q = (req as any).validQuery;

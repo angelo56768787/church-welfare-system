@@ -197,7 +197,7 @@ beneficiaries.patch('/:id', validate(benBody.partial()), wrap(async (req, res) =
 // ---------------- Audit log ----------------
 export const auditRoutes = Router();
 auditRoutes.use(requireAuth);
-auditRoutes.get('/', validate(z.object({ ...pageQuery, entity: z.string().optional(), action: z.string().optional(), q: z.string().optional(), from: dateIn.optional(), to: dateIn.optional() }), 'query'), wrap(async (req, res) => {
+auditRoutes.get('/', requireRole('admin'), validate(z.object({ ...pageQuery, entity: z.string().optional(), action: z.string().optional(), q: z.string().optional(), from: dateIn.optional(), to: dateIn.optional() }), 'query'), wrap(async (req, res) => {
   const q = (req as any).validQuery;
   const f: any = {};
   if (q.entity) f.entity = q.entity;
