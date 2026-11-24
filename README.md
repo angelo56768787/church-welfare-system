@@ -45,3 +45,7 @@ Quote values containing `#` in `.env`.
 See the final report from the build. Automated: `npm test` (money, schedule, deduction, allocation, auth, validation, full loan/assistance/repayment flow, duplicate and overpay protection, report totals reconcile).
 
 Demo data is flagged `isDemo` and shown with a "تجريبي" badge.
+
+## Credits
+Banner photo: "Church of Virgin Mary in Gabal el Teir, Samalut Minya" (Minya diocese) by 松照庵, Wikimedia Commons, CC BY-SA 4.0: https://commons.wikimedia.org/wiki/File:Church_of_Virgin_Mary_in_Gabal_el_Teir,_Samalut_Minya.jpg
+Organization name shown in the header is a setting (Settings page); default is "مطرانية المنيا وتوابعها".

@@ -7,6 +7,7 @@ import { get } from '../lib/api';
 import { dateAr, dateTimeAr, moneyPlain, monthLabel, num } from '../lib/format';
 import { Card, Empty, ErrorBox, LoadingBlock, Money, Skeleton, StatusBadge } from '../components/ui';
 import { ChurchSelect } from '../components/Pickers';
+import { useSettings } from '../hooks/useData';
 
 const PALETTE = ['#315BBD', '#7C5CE0', '#2E8C7B', '#D5AE6B', '#E07A5F', '#5BA4CF', '#9AA5B8', '#A3C14A'];
 const compact = (v: number) => new Intl.NumberFormat('en-US', { notation: 'compact', maximumFractionDigits: 1 }).format(v / 100);
@@ -24,6 +25,7 @@ function Stat({ label, value, sub, icon, tone }: { label: string; value: React.R
 }
 
 export default function Dashboard() {
+  const { data: settings } = useSettings();
   const [church, setChurch] = useState('');
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
@@ -31,10 +33,11 @@ export default function Dashboard() {
   const d = q.data; const c = d?.cards;
   return (
     <div className="space-y-5">
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-l from-navy via-[#1f3d78] to-brand p-6 text-white shadow-card sm:p-8">
+      <div className="relative overflow-hidden rounded-2xl p-6 text-white shadow-card sm:p-8" style={{ backgroundImage: 'linear-gradient(to left, rgba(20,37,68,.55), rgba(20,37,68,.93)), url(/img/church.jpg)', backgroundSize: 'cover', backgroundPosition: 'center 40%' }}>
         <p className="text-xs text-white/70">{new Intl.DateTimeFormat('ar-EG-u-nu-latn', { dateStyle: 'full' }).format(new Date())}</p>
-        <h1 className="mt-2 text-xl font-bold sm:text-2xl">مرحبًا بك في نظام إدارة المستفيدين والدعم المالي</h1>
-        <p className="mt-1 text-sm text-white/75">معًا .. لدعم مجتمعنا بروح المحبة والعطاء</p>
+        <p className="mt-3 text-sm font-medium text-gold">{settings?.orgName}</p>
+        <h1 className="mt-1 text-xl font-bold sm:text-2xl">مرحبًا بك في نظام إدارة المستفيدين والدعم المالي</h1>
+        <p className="mt-1 text-sm text-white/80">معًا .. لدعم مجتمعنا بروح المحبة والعطاء</p>
       </div>
 
       <div className="no-print grid grid-cols-1 gap-3 sm:grid-cols-3">

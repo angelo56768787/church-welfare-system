@@ -18,11 +18,13 @@ const NAV = [
 ];
 
 function SideContent({ onNavigate }: { onNavigate?: () => void }) {
+  const { data: settings } = useSettings();
   return (
     <div className="flex h-full flex-col">
       <div className="flex flex-col items-center gap-2 px-4 pb-5 pt-6 text-center text-white">
         <Cross size={34} className="text-gold" strokeWidth={1.6} />
         <p className="text-sm font-semibold leading-snug">نظام إدارة المستفيدين<br />والدعم المالي</p>
+        <p className="text-xs font-medium text-gold">{settings?.orgName}</p>
         <p className="text-[11px] italic text-white/50">Church Welfare System</p>
       </div>
       <nav className="flex-1 space-y-1 overflow-y-auto px-3 pb-4">

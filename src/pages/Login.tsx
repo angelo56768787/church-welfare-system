@@ -21,11 +21,12 @@ export default function Login() {
     catch (e: any) { setErr(e.message); } finally { setBusy(false); }
   };
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-navy to-[#1d3a6e] p-4">
+    <div className="flex min-h-screen items-center justify-center p-4" style={{ backgroundImage: 'linear-gradient(rgba(20,37,68,.88), rgba(20,37,68,.95)), url(/img/church.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
       <form onSubmit={submit} className="w-full max-w-sm space-y-5 rounded-3xl bg-white p-7 shadow-2xl">
         <div className="text-center">
           <Cross className="mx-auto text-gold" size={40} strokeWidth={1.6} />
           <h1 className="mt-3 text-lg font-bold text-navy">نظام إدارة المستفيدين والدعم المالي</h1>
+          <p className="mt-1 text-sm font-medium text-gold">مطرانية المنيا وتوابعها</p>
           <p className="mt-1 text-xs text-muted">تسجيل الدخول للإدارة المركزية</p>
         </div>
         <Field label="اسم المستخدم"><input className="input" dir="ltr" autoComplete="username" value={username} onChange={(e) => setU(e.target.value)} required autoFocus /></Field>

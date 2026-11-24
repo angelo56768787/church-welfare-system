@@ -213,7 +213,7 @@ auditRoutes.get('/', validate(z.object({ ...pageQuery, entity: z.string().option
 // ---------------- Settings ----------------
 export const settings = Router();
 settings.use(requireAuth);
-const DEFAULTS: Record<string, unknown> = { orgName: 'الكنيسة القبطية الأرثوذكسية', officeName: 'مكتب الشؤون الاجتماعية', firstInstallmentOffsetMonths: 1 };
+const DEFAULTS: Record<string, unknown> = { orgName: 'مطرانية المنيا وتوابعها', officeName: 'مكتب الشؤون الاجتماعية', firstInstallmentOffsetMonths: 1 };
 settings.get('/', wrap(async (_req, res) => {
   const rows: any[] = await SystemSetting.find().lean();
   const out: Record<string, unknown> = { ...DEFAULTS };
