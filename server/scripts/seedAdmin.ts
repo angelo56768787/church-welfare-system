@@ -6,7 +6,15 @@ import { User } from '../models/index.js';
 export async function seedAdmin() {
   if (!env.adminPassword) throw new Error('ADMIN_PASSWORD is required to create the first admin');
   const exists = await User.findOne({ username: env.adminUsername.toLowerCase() });
-  if (exists) { console.log('[seed] admin already exists'); return; }
+  if (exists) {
+    // Env is the source of truth for the bootstrap admin: keep its password and name in sync.
+    if (!(await bcrypt.compare(env.adminPassword, exists.passwordHash))) {
+      exists.passwordHash = await bcrypt.hash(env.adminPassword, 12);
+      await exists.save();
+      console.log('[seed] admin password synced from env');
+    }
+    return;
+  }
   await User.create({ name: env.adminName, username: env.adminUsername, passwordHash: await bcrypt.hash(env.adminPassword, 12), role: 'admin' });
   console.log(`[seed] admin "${env.adminUsername}" created`);
 }
